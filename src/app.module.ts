@@ -3,7 +3,7 @@ import { AuthModule } from './auth/auth.module';
 
 // Decorator
 @Module({
-  imports: [],
+  imports: [AuthModule],
   controllers: [],
   providers: [],
 })
