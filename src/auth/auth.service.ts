@@ -12,7 +12,7 @@ export class AuthService {
   constructor(private prisma: PrismaService) {}
   async signIn(body: AuthDto) {
     ///
-    const userObjc = await this.prisma.user.findUniqueOrThrow({
+    const userObjc = await this.prisma.user.findUnique({
       where: { email: body.email },
     });
     if (!userObjc) {
