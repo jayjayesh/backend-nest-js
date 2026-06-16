@@ -6,10 +6,16 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwt: JwtService,
+  ) {}
+
+  ///
   async signIn(body: AuthDto) {
     ///
     const userObjc = await this.prisma.user.findUnique({
@@ -26,18 +32,10 @@ export class AuthService {
     }
 
     ///
-    const safeUser = await this.prisma.user.findUnique({
-      where: { email: body.email },
-      select: {
-        id: true,
-        email: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-    return safeUser;
+    return this.signToken(userObjc.id, userObjc.email);
   }
 
+  ///
   async signUp(body: AuthDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: body.email },
@@ -60,6 +58,17 @@ export class AuthService {
       },
     });
 
-    return userObjc;
+    /// Option A: return user only (current behavior)
+    // return userObjc;
+    /// Option B: auto-login — return token too
+    return this.signToken(userObjc.id, userObjc.email);
+  }
+
+  ///
+  async signToken(userId: string, email: string) {
+    const payload = { sub: userId, email };
+    return {
+      access_token: await this.jwt.signAsync(payload),
+    };
   }
 }
