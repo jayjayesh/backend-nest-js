@@ -26,7 +26,7 @@ export class AuthService {
     }
 
     ///
-    const safeUser = await this.prisma.user.findUniqueOrThrow({
+    const safeUser = await this.prisma.user.findUnique({
       where: { email: body.email },
       select: {
         id: true,
