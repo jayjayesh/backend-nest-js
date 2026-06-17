@@ -34,6 +34,13 @@ $ pnpm install
 ## Compile and run the project
 
 ```bash
+# step-1 : open docker desktop app
+# step-2 : restart database
+$ pnpm db:dev:restart
+# step-3 : watch app
+$ pnpm run start:dev
+
+
 # development
 $ pnpm run start
 
