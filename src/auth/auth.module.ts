@@ -5,6 +5,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy';
 import { PassportModule } from '@nestjs/passport';
+import 'dotenv/config';
 
 @Module({
   imports: [
