@@ -14,9 +14,7 @@ import 'dotenv/config';
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: {
-        expiresIn: process.env.JWT_EXPIRES_IN
-          ? parseInt(process.env.JWT_EXPIRES_IN, 10)
-          : 15,
+        expiresIn: 900,
       },
     }),
   ],
@@ -24,4 +22,4 @@ import 'dotenv/config';
   providers: [AuthService],
   exports: [JwtModule], // so other modules can use JwtAuthGuard
 })
-export class AuthModule {}
+export class AuthModule { }
