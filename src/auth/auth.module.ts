@@ -19,7 +19,7 @@ import 'dotenv/config';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   exports: [JwtModule], // so other modules can use JwtAuthGuard
 })
 export class AuthModule { }
