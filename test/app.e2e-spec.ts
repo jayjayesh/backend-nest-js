@@ -32,4 +32,25 @@ describe('AppController (e2e)', () => {
   it.todo('Hello World');
   // it.todo('Hello World-2');
   ///================
+
+  ///
+  describe('Auth', () => {
+    describe('signUp', () => {});
+    describe('signIn', () => {});
+  });
+
+  ///
+  describe('User', () => {
+    describe('getMe', () => {});
+    describe('editUser', () => {});
+  });
+
+  ///
+  describe('Bookmarks', () => {
+    describe('getBookmarks', () => {});
+    describe('getBookmarkById', () => {});
+    describe('createBookmark', () => {});
+    describe('editBookmarkById', () => {});
+    describe('deleteBookmarkById', () => {});
+  });
 });
