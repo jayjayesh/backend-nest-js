@@ -107,23 +107,35 @@ describe('App (e2e)', () => {
           .spec()
           .post('/auth/sign-in')
           .withBody(body)
-          .expectStatus(200);
+          .expectStatus(200)
+          .inspect()
+          .stores('userAt', 'access_token');
       });
     });
   });
 
   ///
   describe('User', () => {
-    describe('should getMe', () => {});
-    describe('editUser', () => {});
+    describe('Get current user', () => {
+      it('should get me', () => {
+        return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200);
+      });
+    });
+    describe('editUser', () => { });
   });
 
   ///
   describe('Bookmarks', () => {
-    describe('getBookmarks', () => {});
-    describe('getBookmarkById', () => {});
-    describe('createBookmark', () => {});
-    describe('editBookmarkById', () => {});
-    describe('deleteBookmarkById', () => {});
+    describe('getBookmarks', () => { });
+    describe('getBookmarkById', () => { });
+    describe('createBookmark', () => { });
+    describe('editBookmarkById', () => { });
+    describe('deleteBookmarkById', () => { });
   });
 });
