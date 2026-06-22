@@ -7,7 +7,7 @@ import { EditUserDto } from './dto';
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) { }
+  constructor(private readonly userService: UsersService) {}
   ///
   @Get('me')
   getMe(@GetUser() user: { userId: string; email: string }) {
@@ -15,7 +15,8 @@ export class UsersController {
   }
 
   @Patch()
-  editUser(@GetUser('id') userId: string, @Body() body: EditUserDto) {
+  editUser(@GetUser('userId') userId: string, @Body() body: EditUserDto) {
+    console.log('UsersController : editUser called with:', { userId, body });
     return this.userService.editUser(userId, body);
   }
 }

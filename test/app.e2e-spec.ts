@@ -6,6 +6,7 @@ import { PrismaService } from '../src/prisma/prisma.service';
 import * as pactum from 'pactum';
 import { AuthDto } from '../src/auth/dto';
 import { emit } from 'node:process';
+import { EditUserDto } from '../src/users/dto';
 
 describe('App (e2e)', () => {
   let app: INestApplication<App>;
@@ -116,7 +117,7 @@ describe('App (e2e)', () => {
 
   ///
   describe('User', () => {
-    describe('Get current user', () => {
+    describe('get current user', () => {
       it('should get me', () => {
         return pactum
           .spec()
@@ -127,15 +128,33 @@ describe('App (e2e)', () => {
           .expectStatus(200);
       });
     });
-    describe('editUser', () => { });
+    describe('editUser', () => {
+      const bodyDto: EditUserDto = {
+        firstName: 'validUser edited',
+        lastName: 'test',
+      };
+
+      it('should edit user', () => {
+        return pactum
+          .spec()
+          .patch('/users')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody(bodyDto)
+          .expectStatus(200)
+          .expectBodyContains(bodyDto.firstName)
+          .expectBodyContains(bodyDto.lastName);
+      });
+    });
   });
 
   ///
   describe('Bookmarks', () => {
-    describe('getBookmarks', () => { });
-    describe('getBookmarkById', () => { });
-    describe('createBookmark', () => { });
-    describe('editBookmarkById', () => { });
-    describe('deleteBookmarkById', () => { });
+    describe('getBookmarks', () => {});
+    describe('getBookmarkById', () => {});
+    describe('createBookmark', () => {});
+    describe('editBookmarkById', () => {});
+    describe('deleteBookmarkById', () => {});
   });
 });
