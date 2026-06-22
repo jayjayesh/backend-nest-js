@@ -45,7 +45,7 @@ describe('App (e2e)', () => {
       password: '123',
     };
 
-    describe('sign-up', () => {
+    describe('Signup', () => {
       it('should throw if email is empty', () => {
         return pactum
           .spec()
@@ -79,7 +79,7 @@ describe('App (e2e)', () => {
       });
     });
 
-    describe('sign-in', () => {
+    describe('Signin', () => {
       it('should throw if email is empty', () => {
         return pactum
           .spec()
@@ -117,8 +117,8 @@ describe('App (e2e)', () => {
 
   ///
   describe('User', () => {
-    describe('get current user', () => {
-      it('should get me', () => {
+    describe('Get me', () => {
+      it('should get current user', () => {
         return pactum
           .spec()
           .get('/users/me')
@@ -128,7 +128,7 @@ describe('App (e2e)', () => {
           .expectStatus(200);
       });
     });
-    describe('editUser', () => {
+    describe('Edit user', () => {
       const bodyDto: EditUserDto = {
         firstName: 'validUser edited',
         lastName: 'test',
@@ -151,10 +151,11 @@ describe('App (e2e)', () => {
 
   ///
   describe('Bookmarks', () => {
-    describe('getBookmarks', () => {});
-    describe('getBookmarkById', () => {});
-    describe('createBookmark', () => {});
-    describe('editBookmarkById', () => {});
-    describe('deleteBookmarkById', () => {});
+    describe('Get empty bookmarks', () => {});
+    describe('Create bookmark', () => {});
+    describe('Get bookmarks', () => {});
+    describe('Get bookmark by id', () => {});
+    describe('Edit bookmark by id', () => {});
+    describe('Delete bookmark by id', () => {});
   });
 });
