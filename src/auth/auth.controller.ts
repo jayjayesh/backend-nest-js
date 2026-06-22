@@ -4,12 +4,12 @@ import { AuthDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @HttpCode(HttpStatus.OK)
   @Post('sign-in')
   signIn(@Body() body: AuthDto) {
-    console.log(body);
+    // console.log(body);
     return this.authService.signIn(body);
   }
 
