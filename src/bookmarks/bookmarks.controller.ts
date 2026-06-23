@@ -16,16 +16,16 @@ import { CreateBookmarkDto, EditBookmarkDto } from './dto';
 @UseGuards(JwtAuthGuard)
 @Controller('bookmarks')
 export class BookmarksController {
-  constructor(private bookmarksService: BookmarksService) { }
+  constructor(private bookmarksService: BookmarksService) {}
 
   @Get()
-  getBookmarks(@GetUser('id') userId: string) {
+  getBookmarks(@GetUser('userId') userId: string) {
     return this.bookmarksService.getBookmarks(userId);
   }
 
   @Get(':id')
   getBookmarkById(
-    @GetUser('id') userId: string,
+    @GetUser('userId') userId: string,
     @Param('id') bookmarkId: string,
   ) {
     return this.bookmarksService.getBookmarkById(userId, bookmarkId);
@@ -33,7 +33,7 @@ export class BookmarksController {
 
   @Post()
   createBookmark(
-    @GetUser('id') userId: string,
+    @GetUser('userId') userId: string,
     @Body() body: CreateBookmarkDto,
   ) {
     return this.bookmarksService.createBookmark(userId, body);
@@ -41,7 +41,7 @@ export class BookmarksController {
 
   @Patch(':id')
   editBookmarkById(
-    @GetUser('id') userId: string,
+    @GetUser('userId') userId: string,
     @Param('id') bookmarkId: string,
     @Body() body: EditBookmarkDto,
   ) {
@@ -50,7 +50,7 @@ export class BookmarksController {
 
   @Delete(':id')
   deleteBookmarkById(
-    @GetUser('id') userId: string,
+    @GetUser('userId') userId: string,
     @Param('id') bookmarkId: string,
   ) {
     return this.bookmarksService.deleteBookmarkById(userId, bookmarkId);
