@@ -9,10 +9,11 @@ export class UsersService {
   getMe(userId: string, email: string) {}
 
   async editUser(userId: string, editUserDto: EditUserDto) {
-    console.log('UsersService : editUser called with:', {
-      userId,
-      editUserDto,
-    });
+    // console.log('UsersService : editUser called with:', {
+    //   userId,
+    //   editUserDto,
+    // });
+
     const user = await this.prisma.user.update({
       where: {
         id: userId,
