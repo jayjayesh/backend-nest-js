@@ -111,7 +111,7 @@ describe('App (e2e)', () => {
           .withBody(body)
           .expectStatus(200)
           .inspect()
-          .stores('userAt', 'access_token');
+          .stores('userAt', 'data.access_token');
       });
     });
   });
@@ -162,7 +162,7 @@ describe('App (e2e)', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectBody([]);
+          .expectJsonLike({ data: [] });
       });
     });
 
@@ -199,7 +199,7 @@ describe('App (e2e)', () => {
             title: createBookmarkDto.title,
             description: createBookmarkDto.description,
           })
-          .expectStatus(400);
+          .expectStatus(400).inspect();
       });
 
       it('should create bookmark', () => {
@@ -211,7 +211,7 @@ describe('App (e2e)', () => {
           })
           .withBody(createBookmarkDto)
           .expectStatus(201)
-          .stores('freshCreatedBookmarkId', 'id');
+          .stores('freshCreatedBookmarkId', 'data.id');
       });
     });
 
@@ -225,7 +225,7 @@ describe('App (e2e)', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectJsonLength(1);
+          .expectJsonLength('data', 1);
       });
     });
     ///
@@ -281,7 +281,7 @@ describe('App (e2e)', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectJsonLength(0);
+          .expectJsonLength('data', 0);
       });
     });
   });
