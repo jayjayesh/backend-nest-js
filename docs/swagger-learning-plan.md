@@ -63,10 +63,10 @@ Goal: the UI is organized and each route is self-explanatory.
 
 Goal: secured endpoints show a lock and accept your JWT in the UI.
 
-- [ ] **3.1** Add `@ApiBearerAuth()` to routes guarded by your JWT guard
+- [x] **3.1** Add `@ApiBearerAuth()` to routes guarded by your JWT guard
   - Likely files: `users.controller.ts`, `bookmarks.controller.ts`
   - Done when: those routes show a 🔒 and respect the "Authorize" token.
-- [ ] **3.2** Test the full flow in the UI: sign up → sign in → copy token →
+- [x] **3.2** Test the full flow in the UI: sign up → sign in → copy token →
       click **Authorize** → call a protected route successfully.
   - Done when: a protected GET returns 200 using only the Swagger UI.
 
