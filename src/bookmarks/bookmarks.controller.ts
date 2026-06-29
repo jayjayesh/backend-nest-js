@@ -28,7 +28,7 @@ export class BookmarksController {
   }
 
   @ApiOperation({
-    summary: 'Get perticular bookmark by peroviding bookmark id',
+    summary: 'Get particular bookmark by providing bookmark id',
   })
   @Get(':id')
   getBookmarkById(
@@ -47,7 +47,7 @@ export class BookmarksController {
     return this.bookmarksService.createBookmark(userId, body);
   }
 
-  @ApiOperation({ summary: 'Edit perticular bookmark' })
+  @ApiOperation({ summary: 'Edit particular bookmark' })
   @Patch(':id')
   editBookmarkById(
     @GetUser('userId') userId: string,
@@ -57,7 +57,7 @@ export class BookmarksController {
     return this.bookmarksService.editBookmarkById(userId, bookmarkId, body);
   }
 
-  @ApiOperation({ summary: 'Delete perticular bookmark' })
+  @ApiOperation({ summary: 'Delete particular bookmark' })
   @Delete(':id')
   deleteBookmarkById(
     @GetUser('userId') userId: string,
