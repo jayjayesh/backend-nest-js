@@ -47,14 +47,14 @@ and `@ApiPropertyOptional()`? (They're equivalent — the second is shorthand.)
 
 Goal: the UI is organized and each route is self-explanatory.
 
-- [ ] **2.1** Add `@ApiTags('auth')` to `AuthController`
+- [x] **2.1** Add `@ApiTags('auth')` to `AuthController`
   - File: `src/auth/auth.controller.ts`
-- [ ] **2.2** Add `@ApiTags('users')` to `UsersController`
+- [x] **2.2** Add `@ApiTags('users')` to `UsersController`
   - File: `src/users/users.controller.ts`
-- [ ] **2.3** Add `@ApiTags('bookmarks')` to `BookmarksController`
+- [x] **2.3** Add `@ApiTags('bookmarks')` to `BookmarksController`
   - File: `src/bookmarks/bookmarks.controller.ts`
   - Done when: routes are grouped under three collapsible sections in `/api`.
-- [ ] **2.4** Add `@ApiOperation({ summary: '...' })` to each route handler
+- [x] **2.4** Add `@ApiOperation({ summary: '...' })` to each route handler
   - Done when: every endpoint has a one-line human summary in the UI.
 
 ---

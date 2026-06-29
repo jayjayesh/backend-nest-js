@@ -12,17 +12,23 @@ import { JwtAuthGuard } from '../auth/guard';
 import { BookmarksService } from './bookmarks.service';
 import { GetUser } from '../auth/decorator';
 import { CreateBookmarkDto, EditBookmarkDto } from './dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Bookmarks')
 @UseGuards(JwtAuthGuard)
 @Controller('bookmarks')
 export class BookmarksController {
   constructor(private bookmarksService: BookmarksService) {}
 
+  @ApiOperation({ summary: 'Get all bookmarks for current login user' })
   @Get()
   getBookmarks(@GetUser('userId') userId: string) {
     return this.bookmarksService.getBookmarks(userId);
   }
 
+  @ApiOperation({
+    summary: 'Get perticular bookmark by peroviding bookmark id',
+  })
   @Get(':id')
   getBookmarkById(
     @GetUser('userId') userId: string,
@@ -31,6 +37,7 @@ export class BookmarksController {
     return this.bookmarksService.getBookmarkById(userId, bookmarkId);
   }
 
+  @ApiOperation({ summary: 'Create new bookmark' })
   @Post()
   createBookmark(
     @GetUser('userId') userId: string,
@@ -39,6 +46,7 @@ export class BookmarksController {
     return this.bookmarksService.createBookmark(userId, body);
   }
 
+  @ApiOperation({ summary: 'Edit perticular bookmark' })
   @Patch(':id')
   editBookmarkById(
     @GetUser('userId') userId: string,
@@ -48,6 +56,7 @@ export class BookmarksController {
     return this.bookmarksService.editBookmarkById(userId, bookmarkId, body);
   }
 
+  @ApiOperation({ summary: 'Delete perticular bookmark' })
   @Delete(':id')
   deleteBookmarkById(
     @GetUser('userId') userId: string,
