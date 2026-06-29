@@ -51,6 +51,17 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
+## API Documentation (Swagger)
+
+Once the app is running, the interactive Swagger UI is available at:
+
+```
+http://localhost:3000/api
+```
+
+Use the **Authorize** button (top right) to paste a JWT access token from
+`POST /auth/sign-in` and try the protected endpoints directly in the browser.
+
 ## Run tests
 
 ```bash
