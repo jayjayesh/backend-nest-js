@@ -9,6 +9,16 @@ import { emit, title } from 'node:process';
 import { EditUserDto } from '../src/users/dto';
 import { CreateBookmarkDto, EditBookmarkDto } from '../src/bookmarks/dto';
 
+/// Every response (success or failure) must include a top-level `data` field
+/// that is ALWAYS a Map (JSON object) — never an array or a primitive.
+const expectHasData = {
+  type: 'object',
+  required: ['data'],
+  properties: {
+    data: { type: 'object' },
+  },
+};
+
 describe('App (e2e)', () => {
   let app: INestApplication<App>;
   let prisma: PrismaService;
@@ -54,7 +64,9 @@ describe('App (e2e)', () => {
           .withBody({
             password: body.password,
           })
-          .expectStatus(400);
+          .expectStatus(400)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
 
       it('should throw if password is empty', () => {
@@ -64,11 +76,18 @@ describe('App (e2e)', () => {
           .withBody({
             email: body.email,
           })
-          .expectStatus(400);
+          .expectStatus(400)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
 
       it('should throw if body is empty', () => {
-        return pactum.spec().post('/auth/sign-up').expectStatus(400);
+        return pactum
+          .spec()
+          .post('/auth/sign-up')
+          .expectStatus(400)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
 
       it('should signup', () => {
@@ -76,7 +95,9 @@ describe('App (e2e)', () => {
           .spec()
           .post('/auth/sign-up')
           .withBody(body)
-          .expectStatus(201);
+          .expectStatus(201)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
     });
 
@@ -88,7 +109,9 @@ describe('App (e2e)', () => {
           .withBody({
             password: body.password,
           })
-          .expectStatus(400);
+          .expectStatus(400)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
 
       it('should throw if password is empty', () => {
@@ -98,11 +121,18 @@ describe('App (e2e)', () => {
           .withBody({
             email: body.email,
           })
-          .expectStatus(400);
+          .expectStatus(400)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
 
       it('should throw if body is empty', () => {
-        return pactum.spec().post('/auth/sign-in').expectStatus(400);
+        return pactum
+          .spec()
+          .post('/auth/sign-in')
+          .expectStatus(400)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
       it('should signin', () => {
         return pactum
@@ -110,6 +140,7 @@ describe('App (e2e)', () => {
           .post('/auth/sign-in')
           .withBody(body)
           .expectStatus(200)
+          .expectJsonSchema(expectHasData)
           .inspect()
           .stores('userAt', 'data.access_token');
       });
@@ -126,7 +157,9 @@ describe('App (e2e)', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userAt}',
           })
-          .expectStatus(200);
+          .expectStatus(200)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
     });
     describe('Edit user', () => {
@@ -145,7 +178,9 @@ describe('App (e2e)', () => {
           .withBody(bodyDto)
           .expectStatus(200)
           .expectBodyContains(bodyDto.firstName)
-          .expectBodyContains(bodyDto.lastName);
+          .expectBodyContains(bodyDto.lastName)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
     });
   });
@@ -162,7 +197,9 @@ describe('App (e2e)', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectJsonLike({ data: [] });
+          .expectJsonLike({ data: { items: [] } })
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
     });
 
@@ -185,7 +222,9 @@ describe('App (e2e)', () => {
             description: createBookmarkDto.description,
             link: createBookmarkDto.link,
           })
-          .expectStatus(400);
+          .expectStatus(400)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
 
       it('should throw if link is empty', () => {
@@ -199,7 +238,9 @@ describe('App (e2e)', () => {
             title: createBookmarkDto.title,
             description: createBookmarkDto.description,
           })
-          .expectStatus(400).inspect();
+          .expectStatus(400)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
 
       it('should create bookmark', () => {
@@ -211,7 +252,9 @@ describe('App (e2e)', () => {
           })
           .withBody(createBookmarkDto)
           .expectStatus(201)
-          .stores('freshCreatedBookmarkId', 'data.id');
+          .expectJsonSchema(expectHasData)
+          .stores('freshCreatedBookmarkId', 'data.id')
+          .inspect();
       });
     });
 
@@ -225,7 +268,9 @@ describe('App (e2e)', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectJsonLength('data', 1);
+          .expectJsonLength('data.items', 1)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
     });
     ///
@@ -239,7 +284,9 @@ describe('App (e2e)', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectBodyContains('$S{freshCreatedBookmarkId}');
+          .expectBodyContains('$S{freshCreatedBookmarkId}')
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
     });
     ///
@@ -257,7 +304,9 @@ describe('App (e2e)', () => {
           })
           .withBody(editBookmarkDto)
           .expectStatus(200)
-          .expectBodyContains(editBookmarkDto.title);
+          .expectBodyContains(editBookmarkDto.title)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
     });
     ///
@@ -270,7 +319,9 @@ describe('App (e2e)', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userAt}',
           })
-          .expectStatus(200);
+          .expectStatus(200)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
 
       it('should get empty bookmark', () => {
@@ -281,7 +332,9 @@ describe('App (e2e)', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectJsonLength('data', 0);
+          .expectJsonLength('data.items', 0)
+          .expectJsonSchema(expectHasData)
+          .inspect();
       });
     });
   });

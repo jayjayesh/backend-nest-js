@@ -11,9 +11,10 @@ export class BookmarksService {
   constructor(private prisma: PrismaService) {}
 
   async getBookmarks(userId: string) {
-    return await this.prisma.bookmark.findMany({
+    const bookmarks = await this.prisma.bookmark.findMany({
       where: { userId },
     });
+    return { items: bookmarks };
   }
 
   async getBookmarkById(userId: string, bookmarkId: string) {
