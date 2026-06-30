@@ -90,7 +90,7 @@ Goal: consumers know what each endpoint returns and which errors to expect.
 
 Goal: a clean, professional, shareable API doc.
 
-- [ ] **5.1** Document path/query params with `@ApiParam` and `@ApiQuery`
+- [x] **5.1** Document path/query params with `@ApiParam` (`@ApiQuery` N/A — no query params yet)
 - [ ] **5.2** Try the CLI plugin to auto-infer `@ApiProperty` from types
       (configure `plugins: ['@nestjs/swagger']` in `nest-cli.json`) and observe
       what it generates for free

@@ -19,6 +19,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -50,6 +51,11 @@ export class BookmarksController {
     description: 'Get bookmarks by id, return single bookmark object',
     type: SwaggerBookmarkResponseDto,
   })
+  @ApiParam({
+    name: 'id',
+    description: 'Bookmark id (uuid)',
+    example: '7d6839fa-9a11-4bd9-9d3f-2b331ea9dabc',
+  })
   @Get(':id')
   getBookmarkById(
     @GetUser('userId') userId: string,
@@ -74,8 +80,12 @@ export class BookmarksController {
   @ApiOkResponse({
     description: 'Edit bookmark successfully, return edited bookmark object',
   })
-  @ApiForbiddenResponse({
-    description: '403 : bookmark not found or bookmark is not yours',
+  @ApiForbiddenResponse({ description: '403 : bookmark is not yours' })
+  @ApiNotFoundResponse({ description: '404 : bookmark not found' })
+  @ApiParam({
+    name: 'id',
+    description: 'Bookmark id (uuid)',
+    example: '7d6839fa-9a11-4bd9-9d3f-2b331ea9dabc',
   })
   @Patch(':id')
   editBookmarkById(
@@ -93,6 +103,11 @@ export class BookmarksController {
   })
   @ApiForbiddenResponse({ description: '403 : bookmark is not yours' })
   @ApiNotFoundResponse({ description: '404 : id does not exist' })
+  @ApiParam({
+    name: 'id',
+    description: 'Bookmark id (uuid)',
+    example: '7d6839fa-9a11-4bd9-9d3f-2b331ea9dabc',
+  })
   @Delete(':id')
   deleteBookmarkById(
     @GetUser('userId') userId: string,
