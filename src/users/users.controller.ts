@@ -3,22 +3,32 @@ import { JwtAuthGuard } from '../auth/guard';
 import { GetUser } from '../auth/decorator';
 import { UsersService } from './users.service';
 import { EditUserDto } from './dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Users')
-@ApiBearerAuth()
+@ApiBearerAuth() // it show lock icon
+@ApiUnauthorizedResponse({ description: '401 : invalid JWT' })
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
   ///
   @ApiOperation({ summary: 'Get current user' })
+  @ApiOkResponse({ description: 'Get current user successfully' })
   @Get('me')
   getMe(@GetUser() user: { userId: string; email: string }) {
     return user;
   }
 
   @ApiOperation({ summary: 'Update current user' })
+  @ApiOkResponse({ description: 'Update current user successfully' })
   @Patch()
   editUser(@GetUser('userId') userId: string, @Body() body: EditUserDto) {
     // console.log('UsersController : editUser called with:', { userId, body });

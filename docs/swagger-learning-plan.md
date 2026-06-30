@@ -76,9 +76,9 @@ Goal: secured endpoints show a lock and accept your JWT in the UI.
 
 Goal: consumers know what each endpoint returns and which errors to expect.
 
-- [ ] **4.1** Add `@ApiResponse` (or `@ApiOkResponse` / `@ApiCreatedResponse`)
+- [x] **4.1** Add `@ApiResponse` (or `@ApiOkResponse` / `@ApiCreatedResponse`)
       to a few key routes
-- [ ] **4.2** Document error responses: `@ApiUnauthorizedResponse`,
+- [x] **4.2** Document error responses: `@ApiUnauthorizedResponse`,
       `@ApiForbiddenResponse`, `@ApiNotFoundResponse`
 - [ ] **4.3** Create response DTO classes (e.g. `UserResponseDto`) and reference
       them with `@ApiResponse({ type: UserResponseDto })` so the schema is shown

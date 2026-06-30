@@ -12,16 +12,27 @@ import { JwtAuthGuard } from '../auth/guard';
 import { BookmarksService } from './bookmarks.service';
 import { GetUser } from '../auth/decorator';
 import { CreateBookmarkDto, EditBookmarkDto } from './dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Bookmarks')
-@ApiBearerAuth()
+@ApiBearerAuth() // it show lock icon
+@ApiUnauthorizedResponse({ description: '401 : invalid JWT' })
 @UseGuards(JwtAuthGuard)
 @Controller('bookmarks')
 export class BookmarksController {
   constructor(private bookmarksService: BookmarksService) {}
 
   @ApiOperation({ summary: 'Get all bookmarks for current login user' })
+  @ApiOkResponse({ description: 'Get all bookmarks, return bookmark list' })
   @Get()
   getBookmarks(@GetUser('userId') userId: string) {
     return this.bookmarksService.getBookmarks(userId);
@@ -29,6 +40,9 @@ export class BookmarksController {
 
   @ApiOperation({
     summary: 'Get particular bookmark by providing bookmark id',
+  })
+  @ApiOkResponse({
+    description: 'Get bookmarks by id, return single bookmark object',
   })
   @Get(':id')
   getBookmarkById(
@@ -39,6 +53,9 @@ export class BookmarksController {
   }
 
   @ApiOperation({ summary: 'Create new bookmark' })
+  @ApiCreatedResponse({
+    description: 'New bookmark created, return new bookmark object',
+  })
   @Post()
   createBookmark(
     @GetUser('userId') userId: string,
@@ -48,6 +65,12 @@ export class BookmarksController {
   }
 
   @ApiOperation({ summary: 'Edit particular bookmark' })
+  @ApiOkResponse({
+    description: 'Edit bookmark successfully, return edited bookmark object',
+  })
+  @ApiForbiddenResponse({
+    description: '403 : bookmark not found or bookmark is not yours',
+  })
   @Patch(':id')
   editBookmarkById(
     @GetUser('userId') userId: string,
@@ -58,6 +81,12 @@ export class BookmarksController {
   }
 
   @ApiOperation({ summary: 'Delete particular bookmark' })
+  @ApiOkResponse({
+    description:
+      'Bookmark deleted successfully, return deleted bookmark object',
+  })
+  @ApiForbiddenResponse({ description: '403 : bookmark is not yours' })
+  @ApiNotFoundResponse({ description: '404 : id does not exist' })
   @Delete(':id')
   deleteBookmarkById(
     @GetUser('userId') userId: string,
