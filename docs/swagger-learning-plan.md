@@ -94,9 +94,10 @@ Goal: a clean, professional, shareable API doc.
 - [x] **5.2** Try the CLI plugin to auto-infer `@ApiProperty` from types
       (configure `plugins: ['@nestjs/swagger']` in `nest-cli.json`) and observe
       what it generates for free
-- [ ] **5.3** Export the OpenAPI JSON (the `document` object) and skim the spec
-- [ ] **5.4** (Optional) Version the API or split docs with multiple
-      `SwaggerModule.setup` mounts
+- [x] **5.3** Export the OpenAPI JSON (the `document` object) and skim the spec
+      (writes `swagger.json` at startup via `writeFileSync`; gitignored)
+- [ ] **5.4** (Optional — skipped) Version the API or split docs with multiple
+      `SwaggerModule.setup` mounts. Not needed yet; revisit if versioning is required.
 
 **Verify Phase 5:** a teammate could understand and call every endpoint using
 only `/api`, with no extra explanation from you.
@@ -121,3 +122,9 @@ only `/api`, with no extra explanation from you.
 Jot a date + note when you finish a phase:
 
 - _Phase 0 — done (Swagger set up, AuthDto documented)_
+- _Phase 1 — done (all request DTOs documented)_
+- _Phase 2 — done (tags + operation summaries on all controllers)_
+- _Phase 3 — done (bearer auth on guarded routes; full flow verified live)_
+- _Phase 4 — done (success + error responses; typed response DTOs)_
+- _Phase 5 — done (path params; CLI plugin enabled; swagger.json export). 5.4 skipped (not needed)._
+- **Plan complete 🎉**
