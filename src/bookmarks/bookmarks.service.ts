@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookmarkDto, EditBookmarkDto } from './dto';
 
@@ -13,12 +17,18 @@ export class BookmarksService {
   }
 
   async getBookmarkById(userId: string, bookmarkId: string) {
-    return await this.prisma.bookmark.findFirst({
-      where: {
-        id: bookmarkId,
-        userId,
-      },
+    const bookmark = await this.prisma.bookmark.findUnique({
+      where: { id: bookmarkId },
     });
+
+    if (!bookmark) {
+      throw new NotFoundException('Bookmark not found');
+    }
+    if (bookmark.userId !== userId) {
+      throw new ForbiddenException('Access to resources denied');
+    }
+
+    return bookmark;
   }
 
   async createBookmark(userId: string, body: CreateBookmarkDto) {
@@ -37,13 +47,14 @@ export class BookmarksService {
     bookmarkId: string,
     body: EditBookmarkDto,
   ) {
-    const bookmark = await this.prisma.bookmark.findFirst({
-      where: {
-        id: bookmarkId,
-      },
+    const bookmark = await this.prisma.bookmark.findUnique({
+      where: { id: bookmarkId },
     });
 
-    if (!bookmark || bookmark.userId != userId) {
+    if (!bookmark) {
+      throw new NotFoundException('Bookmark not found');
+    }
+    if (bookmark.userId !== userId) {
       throw new ForbiddenException('Access to resources denied');
     }
 
@@ -58,11 +69,14 @@ export class BookmarksService {
   }
 
   async deleteBookmarkById(userId: string, bookmarkId: string) {
-    const bookmark = await this.prisma.bookmark.findFirst({
+    const bookmark = await this.prisma.bookmark.findUnique({
       where: { id: bookmarkId },
     });
 
-    if (!bookmark || bookmark.userId != userId) {
+    if (!bookmark) {
+      throw new NotFoundException('Bookmark not found');
+    }
+    if (bookmark.userId !== userId) {
       throw new ForbiddenException('Access to resources denied');
     }
 
