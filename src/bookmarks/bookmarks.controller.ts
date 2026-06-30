@@ -22,6 +22,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { SwaggerBookmarkResponseDto } from './dto/swagger-bookmark-response.dto';
 
 @ApiTags('Bookmarks')
 @ApiBearerAuth() // it show lock icon
@@ -32,7 +33,11 @@ export class BookmarksController {
   constructor(private bookmarksService: BookmarksService) {}
 
   @ApiOperation({ summary: 'Get all bookmarks for current login user' })
-  @ApiOkResponse({ description: 'Get all bookmarks, return bookmark list' })
+  @ApiOkResponse({
+    description: 'Get all bookmarks, return bookmark list',
+    type: SwaggerBookmarkResponseDto,
+    isArray: true,
+  })
   @Get()
   getBookmarks(@GetUser('userId') userId: string) {
     return this.bookmarksService.getBookmarks(userId);
@@ -43,6 +48,7 @@ export class BookmarksController {
   })
   @ApiOkResponse({
     description: 'Get bookmarks by id, return single bookmark object',
+    type: SwaggerBookmarkResponseDto,
   })
   @Get(':id')
   getBookmarkById(

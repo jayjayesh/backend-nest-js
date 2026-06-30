@@ -11,6 +11,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { SwaggerUserResponseDto } from './dto/swagger-user-response.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth() // it show lock icon
@@ -21,14 +22,20 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
   ///
   @ApiOperation({ summary: 'Get current user' })
-  @ApiOkResponse({ description: 'Get current user successfully' })
+  @ApiOkResponse({
+    description: 'Get current user successfully',
+    type: SwaggerUserResponseDto,
+  })
   @Get('me')
   getMe(@GetUser() user: { userId: string; email: string }) {
     return user;
   }
 
   @ApiOperation({ summary: 'Update current user' })
-  @ApiOkResponse({ description: 'Update current user successfully' })
+  @ApiOkResponse({
+    description: 'Update current user successfully',
+    type: SwaggerUserResponseDto,
+  })
   @Patch()
   editUser(@GetUser('userId') userId: string, @Body() body: EditUserDto) {
     // console.log('UsersController : editUser called with:', { userId, body });

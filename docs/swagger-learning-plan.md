@@ -80,7 +80,7 @@ Goal: consumers know what each endpoint returns and which errors to expect.
       to a few key routes
 - [x] **4.2** Document error responses: `@ApiUnauthorizedResponse`,
       `@ApiForbiddenResponse`, `@ApiNotFoundResponse`
-- [ ] **4.3** Create response DTO classes (e.g. `UserResponseDto`) and reference
+- [x] **4.3** Create response DTO classes (e.g. `UserResponseDto`) and reference
       them with `@ApiResponse({ type: UserResponseDto })` so the schema is shown
   - Done when: at least one endpoint shows a typed 200 **and** an error response.
 
