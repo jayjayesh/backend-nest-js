@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { AuthDto, RefreshDto } from './dto';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -21,8 +21,8 @@ export class AuthController {
   @ApiOkResponse({
     description: 'Signed in successfully, returns access token',
   })
-  @ApiForbiddenResponse({ description: '403 : Not allowed, wrong credentials' })
   @ApiBadRequestResponse({ description: '400 : validation failed' })
+  @ApiForbiddenResponse({ description: '403 : Not allowed, wrong credentials' })
   @Post('sign-in')
   signIn(@Body() body: AuthDto) {
     // console.log(body);
@@ -36,5 +36,17 @@ export class AuthController {
   @Post('sign-up')
   signUp(@Body() body: AuthDto) {
     return this.authService.signUp(body);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get a new access token using a refresh token' })
+  @ApiOkResponse({ description: 'Returns a new access + refresh token pair' })
+  @ApiBadRequestResponse({ description: '400 : validation failed' })
+  @ApiForbiddenResponse({
+    description: '403 : invalid or expired refresh token',
+  })
+  @Post('refresh-token')
+  refreshToken(@Body() body: RefreshDto) {
+    return this.authService.refreshToken(body.refresh_token);
   }
 }

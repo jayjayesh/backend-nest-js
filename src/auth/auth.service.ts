@@ -67,8 +67,29 @@ export class AuthService {
   ///
   async signToken(userId: string, email: string) {
     const payload = { sub: userId, email };
-    return {
-      access_token: await this.jwt.signAsync(payload),
-    };
+    const access_token = await this.jwt.signAsync(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: Number(process.env.JWT_EXPIRES_IN),
+    });
+    const refresh_token = await this.jwt.signAsync(payload, {
+      secret: process.env.JWT_REFRESH_SECRET,
+      expiresIn: Number(process.env.JWT_REFRESH_EXPIRES_IN),
+    });
+
+    return { access_token, refresh_token };
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      // Verify ther refresh token's signature + expiry using the REFRESH secret
+      const payload = await this.jwt.verifyAsync<{
+        sub: string;
+        email: string;
+      }>(refreshToken, { secret: process.env.JWT_REFRESH_SECRET });
+      // Token is valid -> issue a fresh pair
+      return this.signToken(payload.sub, payload.email);
+    } catch {
+      throw new ForbiddenException('Invalid or expired refresh token');
+    }
   }
 }

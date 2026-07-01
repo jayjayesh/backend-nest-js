@@ -4,7 +4,7 @@ import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import * as pactum from 'pactum';
-import { AuthDto } from '../src/auth/dto';
+import { AuthDto, RefreshDto } from '../src/auth/dto';
 import { emit, title } from 'node:process';
 import { EditUserDto } from '../src/users/dto';
 import { CreateBookmarkDto, EditBookmarkDto } from '../src/bookmarks/dto';
@@ -134,6 +134,7 @@ describe('App (e2e)', () => {
           .expectJsonSchema(expectHasData)
           .inspect();
       });
+
       it('should signin', () => {
         return pactum
           .spec()
@@ -142,7 +143,35 @@ describe('App (e2e)', () => {
           .expectStatus(200)
           .expectJsonSchema(expectHasData)
           .inspect()
-          .stores('userAt', 'data.access_token');
+          .stores('userAt', 'data.access_token')
+          .stores('userRt', 'data.refresh_token');
+      });
+    });
+
+    describe('Refresh Token', () => {
+      it('should throw 403 forbidden, if bad refresh token dto', () => {
+        return pactum
+          .spec()
+          .post('/auth/refresh-token')
+          .withBody({ refresh_token: 'invalid_refresh_token' })
+          .expectStatus(403)
+          .inspect();
+      });
+      it('should throw 400 bad-request, if no body param', () => {
+        return pactum
+          .spec()
+          .post('/auth/refresh-token')
+          .withBody({})
+          .expectStatus(400)
+          .inspect();
+      });
+      it('should refresh token', () => {
+        return pactum
+          .spec()
+          .post('/auth/refresh-token')
+          .withBody({ refresh_token: '$S{userRt}' })
+          .expectStatus(200)
+          .inspect();
       });
     });
   });
