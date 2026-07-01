@@ -5,7 +5,7 @@ export class AuthDto {
   @IsEmail()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'test@getMaxListeners.com',
+    example: 'test@gmail.com',
   })
   email!: string;
 
